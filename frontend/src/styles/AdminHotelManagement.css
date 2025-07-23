@@ -1,0 +1,31 @@
+.admin-hotel-management {
+  padding: 40px 20px;
+}
+
+.admin-hotel-management form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.admin-hotel-management form input,
+.admin-hotel-management form textarea,
+.admin-hotel-management form button {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.hotel-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.hotel-edit-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  width: 300px;
+}

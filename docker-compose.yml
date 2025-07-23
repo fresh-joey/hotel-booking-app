@@ -1,0 +1,88 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_DATABASE: hotel_auth
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "4000:4000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: yourpassword
+      MYSQL_DATABASE: hotel_auth
+    depends_on:
+      - mysql
+
+  hotel-service:
+    build: ./hotel-service
+    ports:
+      - "4001:4001"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: yourpassword
+      MYSQL_DATABASE: hotel_service
+      AWS_ACCESS_KEY_ID: your-access-key
+      AWS_SECRET_ACCESS_KEY: your-secret-key
+      AWS_REGION: eu-west-1
+      S3_BUCKET_NAME: your-bucket-name
+    depends_on:
+      - mysql
+
+  booking-service:
+    build: ./booking-service
+    ports:
+      - "4002:4002"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: yourpassword
+      MYSQL_DATABASE: booking_service
+      AWS_ACCESS_KEY_ID: your-access-key
+      AWS_SECRET_ACCESS_KEY: your-secret-key
+      AWS_REGION: eu-west-1
+      SES_EMAIL_SOURCE: yourverified@email.com
+    depends_on:
+      - mysql
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "4003:4003"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: yourpassword
+      MYSQL_DATABASE: user_service
+    depends_on:
+      - mysql
+
+  review-service:
+    build: ./review-service
+    ports:
+      - "4004:4004"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: yourpassword
+      MYSQL_DATABASE: review_service
+    depends_on:
+      - mysql
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:5173"
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

@@ -1,0 +1,36 @@
+.hotel-search {
+  padding: 40px 20px;
+}
+
+.hotel-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.hotel-search-form input,
+.hotel-search-form button {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.hotel-search-form button {
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.hotel-search-form button:hover {
+  opacity: 0.9;
+}
+
+.hotel-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
