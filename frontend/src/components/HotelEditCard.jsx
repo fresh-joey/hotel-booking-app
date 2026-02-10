@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { API_URLS } from "../config/api.js";
 
-export default function HotelEditCard({ hotel, onHotelUpdated, onHotelDeleted }) {
+export default function HotelEditCard({
+  hotel,
+  onHotelUpdated,
+  onHotelDeleted,
+}) {
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState(hotel);
 
@@ -9,10 +14,10 @@ export default function HotelEditCard({ hotel, onHotelUpdated, onHotelDeleted })
   };
 
   const handleUpdate = async () => {
-    const res = await fetch(`http://localhost:4001/hotels/${hotel.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
+    const res = await fetch(`${API_URLS.HOTEL}/hotels/${hotel.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     });
     const updatedHotel = await res.json();
     onHotelUpdated(updatedHotel);
@@ -20,8 +25,8 @@ export default function HotelEditCard({ hotel, onHotelUpdated, onHotelDeleted })
   };
 
   const handleDelete = async () => {
-    await fetch(`http://localhost:4001/hotels/${hotel.id}`, {
-      method: 'DELETE'
+    await fetch(`${API_URLS.HOTEL}/hotels/${hotel.id}`, {
+      method: "DELETE",
     });
     onHotelDeleted(hotel.id);
   };
@@ -31,9 +36,17 @@ export default function HotelEditCard({ hotel, onHotelUpdated, onHotelDeleted })
       {editing ? (
         <>
           <input name="name" value={formData.name} onChange={handleChange} />
-          <input name="location" value={formData.location} onChange={handleChange} />
+          <input
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+          />
           <input name="price" value={formData.price} onChange={handleChange} />
-          <textarea name="description" value={formData.description} onChange={handleChange} />
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
           <input name="image" value={formData.image} onChange={handleChange} />
           <button onClick={handleUpdate}>Save</button>
           <button onClick={() => setEditing(false)}>Cancel</button>

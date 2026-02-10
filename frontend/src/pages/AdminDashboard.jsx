@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import AdminBookingList from '../components/AdminBookingList.jsx';
+import React, { useEffect, useState } from "react";
+import AdminBookingList from "../components/AdminBookingList.jsx";
+import { API_URLS } from "../config/api.js";
 
 export default function AdminDashboard() {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     const fetchBookings = async () => {
-      const res = await fetch('http://localhost:4002/bookings');
+      const res = await fetch(`${API_URLS.BOOKING}/bookings`);
       const data = await res.json();
       setBookings(data);
     };

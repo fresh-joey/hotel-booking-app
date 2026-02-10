@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { API_URLS } from "../config/api.js";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch('http://localhost:4003/users/me');
+      const res = await fetch(`${API_URLS.USER}/users/me`);
       const data = await res.json();
       setUser(data);
     };
