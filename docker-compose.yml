@@ -1,11 +1,12 @@
 services:
   mysql:
     image: mysql:8.0
+    container_name: hotel-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE_AUTH}
     ports:
-      - "3306:3306"
+      - "3308:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql-init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -19,6 +20,7 @@ services:
     build: ./auth-service
     ports:
       - "4000:4000"
+    container_name: hotel-auth
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
@@ -38,6 +40,7 @@ services:
     build: ./hotel-service
     ports:
       - "4001:4001"
+    container_name: hotel-service
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
@@ -56,6 +59,7 @@ services:
     build: ./booking-service
     ports:
       - "4002:4002"
+    container_name: hotel-booking
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
@@ -74,6 +78,7 @@ services:
     build: ./user-service
     ports:
       - "4003:4003"
+    container_name: hotel-user
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
@@ -88,6 +93,7 @@ services:
     build: ./review-service
     ports:
       - "4004:4004"
+    container_name: hotel-review
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
@@ -102,6 +108,19 @@ services:
     build: ./frontend
     ports:
       - "3000:5173"
+    container_name: hotel-app
+    environment:
+      VITE_API_AUTH_URL: "http://auth-service:4000"
+      VITE_API_HOTEL_URL: "http://hotel-service:4001"
+      VITE_API_BOOKING_URL: "http://booking-service:4002"
+      VITE_API_USER_URL: "http://user-service:4003"
+      VITE_API_REVIEW_URL: "http://review-service:4004"
+    depends_on:
+      - auth-service
+      - hotel-service
+      - booking-service
+      - user-service
+      - review-service
     restart: unless-stopped
 
 volumes:
